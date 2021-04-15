@@ -81,6 +81,7 @@ def calc_all(gold_filename='golds.json', filepath=filepath):
                 models.append(file)
 
     gold = read_json(gold_filename)
+    print("models", models)
     models.remove(gold_filename)
 
     outputs = []

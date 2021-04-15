@@ -6,7 +6,9 @@ from operator import itemgetter
 from nltk.translate.bleu_score import corpus_bleu
 from rouge import Rouge
 
+# //TODO only for this project.
 meteor_jar = 'meteor-1.5.jar'
+filepath = '/content/drive/My Drive/NLP/evaluation/'
 
 
 def calc_metrics(refs, hyps, metric="all", meteor_jar=meteor_jar):
@@ -61,11 +63,7 @@ def create_json(dictionary_, filename=None, custom='', filepath=filepath):
         f.write(json.dumps(dictionary_))
     print("Wrote to file:", filepath + filename + custom + ".json")
 
-
-# //TODO only for this project.
-filepath = '/content/drive/My Drive/NLP/evaluation/'
-
-
+    
 def read_json(filename, filepath=filepath):
     list_ = []
     with open(filepath + filename, 'r') as f:

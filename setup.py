@@ -2,11 +2,17 @@ from setuptools import setup
 
 setup(
     name='nlp_colab',
-    version='',
+    version='1.0',
     packages=[''],
     url='',
     license='',
     author='karl',
     author_email='',
-    description='For nlp project in colab'
+    description='for nlp project',
+    install_requires=[
+        "setuptools~=52.0.0",
+        "pandas~=1.2.4",
+        "nltk~=3.6.1",
+        "rouge~=1.0.0"
+    ],
 )

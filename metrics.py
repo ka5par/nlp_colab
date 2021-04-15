@@ -12,6 +12,12 @@ filepath = '/content/drive/My Drive/NLP/evaluation/'
 
 
 def calc_metrics(refs, hyps, metric="all", meteor_jar=meteor_jar):
+    """
+    Calculate all the metrics given list of refs and list of hyps. Both as list of strings.
+    
+    Output: dictionary in the form of {metric: score, metric2: score} 
+    
+    """
     metrics = dict()
     metrics["count"] = len(hyps)
 
@@ -37,6 +43,10 @@ def calc_metrics(refs, hyps, metric="all", meteor_jar=meteor_jar):
 
 
 def print_metrics(refs, hyps, metric="all"):
+    """
+    Prints out all the metrics in a readable format.  
+    
+    """
     metrics = calc_metrics(refs, hyps, metric=metric)
     print(metrics)
     print("-------------METRICS-------------")
@@ -54,6 +64,18 @@ def print_metrics(refs, hyps, metric="all"):
 
 
 def create_json(dictionary_, filename=None, custom='', filepath=filepath):
+    
+    """
+    Given a dictionary creates a json usable for calc_all. 
+    
+    Input format should be [{id: int, summary:'str'}] or [{id:int, summary:'str', model:'str'}] , where:
+    
+    id: id of the article, 
+    summary: summary for that article
+    model:  model name
+    
+    output: json file
+     """
     if "id" not in dictionary_[0] or 'summary' not in dictionary_[0]:
         raise TypeError(
             "List of dictionaries should be in this format: [{id:int, summary:'str'}] or [{id:int, summary:'str', model:'str'}]")
@@ -65,6 +87,9 @@ def create_json(dictionary_, filename=None, custom='', filepath=filepath):
 
     
 def read_json(filename, filepath=filepath):
+    """ 
+    aux function for jsons created by create_json
+    """
     list_ = []
     with open(filepath + filename, 'r') as f:
         for line in f:
@@ -73,6 +98,10 @@ def read_json(filename, filepath=filepath):
 
 
 def calc_all(gold_filename='golds.json', filepath=filepath):
+    
+    """
+    calculates all metrics for all the models in the filepath.
+    """
     models = []
 
     for root, directories, file in os.walk(filepath):
@@ -100,6 +129,9 @@ def calc_all(gold_filename='golds.json', filepath=filepath):
 
 
 def pandas_calc_all(gold_filename='golds.json', filepath=filepath):
+    """
+    convenince function: output of calc all as pandas dataframe 
+    """
     dict_ = calc_all()
     df = pd.DataFrame(dict_[0])
 

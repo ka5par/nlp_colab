@@ -1,2 +1,4 @@
+setuptools~=52.0.0
+pandas~=1.2.4
 nltk~=3.6.1
 rouge~=1.0.0

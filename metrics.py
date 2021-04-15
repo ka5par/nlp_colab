@@ -1,3 +1,8 @@
+import json
+import os
+import pandas as pd
+from operator import itemgetter
+
 from nltk.translate.bleu_score import corpus_bleu
 from rouge import Rouge
 
@@ -44,3 +49,63 @@ def print_metrics(refs, hyps, metric="all"):
     if "meteor" in metrics:
         print("METEOR:   \t{:3.1f}".format(metrics["meteor"] * 100.0))
     return metrics
+
+
+def create_json(dictionary_, filename=None, custom='', filepath=filepath):
+    if "id" not in dictionary_[0] or 'summary' not in dictionary_[0]:
+        raise TypeError(
+            "List of dictionaries should be in this format: [{id:int, summary:'str'}] or [{id:int, summary:'str', model:'str'}]")
+    if "model" in dictionary_[0] and filename == None:
+        filename = dictionary_[0]['model']
+    with open(filepath + filename + custom + ".json", 'w') as f:
+        f.write(json.dumps(dictionary_))
+    print("Wrote to file:", filepath + filename + custom + ".json")
+
+
+# //TODO only for this project.
+filepath = '/content/drive/My Drive/NLP/evaluation/'
+
+
+def read_json(filename, filepath=filepath):
+    list_ = []
+    with open(filepath + filename, 'r') as f:
+        for line in f:
+            list_.append(json.loads(line))
+    return list_[0]
+
+
+def calc_all(gold_filename='golds.json', filepath=filepath):
+    models = []
+
+    for root, directories, file in os.walk(filepath):
+        for f in file:
+            if f.endswith(".json"):
+                models.append(file)
+
+    gold = read_json(gold_filename)
+    models.remove(gold_filename)
+
+    outputs = []
+
+    for model in models:
+        output = read_json(model)
+        keys = list(map(itemgetter('id'), output))[:10]
+        summaries = list(map(itemgetter('summary'), output))[:10]
+        golds = [gold[key] for key in keys]
+
+        output = {model.split('.')[0]: calc_metrics(golds, summaries)}
+
+        outputs.append(output)
+
+    return outputs
+
+
+def pandas_calc_all(gold_filename='golds.json', filepath=filepath):
+    dict_ = calc_all()
+    df = pd.DataFrame(dict_[0])
+
+    for i in range(1, len(dict_)):
+        col_name = str(list(dict_[i].keys())[0])
+        df[col_name] = df.index.map(dict_[i][col_name])
+
+    return df

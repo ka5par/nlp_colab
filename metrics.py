@@ -1,3 +1,9 @@
+import os
+import re
+
+from rouge import Rouge
+from nltk.translate.bleu_score import corpus_bleu
+
 def calc_metrics(refs, hyps, metric="all", meteor_jar=meteor_jar):
 
     metrics = dict()
@@ -12,6 +18,8 @@ def calc_metrics(refs, hyps, metric="all", meteor_jar=meteor_jar):
         scores = rouge.get_scores(hyps, refs, avg=True)
         f_scores = {score: scores[score].get('f') for score in scores}
         metrics.update(f_scores)
+        
+    # //TODO fix meteor.
     #https://github.com/nltk/nltk/issues/2365  no corpus level in NLTK
     # if metric in ("meteor", "all") and meteor_jar is not None and os.path.exists(meteor_jar):
         # could not convert string to float: 'Error: specify SCORE or EVAL or SING'
@@ -26,8 +34,6 @@ def print_metrics(refs, hyps, metric="all"):
     print(metrics)
     print("-------------METRICS-------------")
     print("Count:\t", metrics["count"])
-    #print("Ref:\t", metrics["ref_example"])
-    #print("Hyp:\t", metrics["hyp_example"])
 
     if "bleu" in metrics:
         print("BLEU:     \t{:3.1f}".format(metrics["bleu"] * 100.0))

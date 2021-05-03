@@ -141,7 +141,7 @@ def calc_all(gold_filename='golds.json', filepath=filepath, only_in_test = True)
     return outputs
 
 
-def pandas_calc_all(gold_filename='golds.json', filepath=filepath):
+def pandas_calc_all(gold_filename='golds.json', filepath=filepath, only_in_test = True):
     """
     convenince function: output of calc all as pandas dataframe 
     """

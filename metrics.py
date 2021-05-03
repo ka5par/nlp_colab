@@ -117,8 +117,8 @@ def calc_all(gold_filename='golds.json', filepath=filepath):
 
     for model in models:
         output = read_json(model)
-        keys = list(map(itemgetter('id'), output))[:10]
-        summaries = list(map(itemgetter('summary'), output))[:10]
+        keys = list(map(itemgetter('id'), output))
+        summaries = list(map(itemgetter('summary'), output))
         golds = [gold[key] for key in keys]
 
         output = {model.split('.')[0]: calc_metrics(golds, summaries)}

@@ -97,7 +97,7 @@ def read_json(filename, filepath=filepath):
     return list_[0]
 
 
-def calc_all(gold_filename='golds.json', filepath=filepath):
+def calc_all(gold_filename='golds.json', filepath=filepath, only_in_test = True):
     
     """
     calculates all metrics for all the models in the filepath.
@@ -109,10 +109,23 @@ def calc_all(gold_filename='golds.json', filepath=filepath):
             if f.endswith(".json"):
                 models.append(file)
 
-    gold = read_json(gold_filename)
+    if only_in_test:
+        with open(filepath+'test_golds.txt') as f:
+            ids = f.read().splitlines()
+        
+        old_gold = read_json(gold_filename)
+        new_gold = {}
+        
+        for id in ids: 
+             gold[id] = old_gold[id]
+    else: 
+        gold = read_json(gold_filename)
+    
     models = models[0]  # //TODO <- ???
     models.remove(gold_filename)
+    
 
+        
     outputs = []
 
     for model in models:

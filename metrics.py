@@ -114,7 +114,7 @@ def calc_all(gold_filename='golds.json', filepath=filepath, only_in_test = True)
             ids = f.read().splitlines()
         
         old_gold = read_json(gold_filename)
-        new_gold = {}
+        gold = {}
         
         for id in ids: 
              gold[id] = old_gold[id]

@@ -145,7 +145,7 @@ def pandas_calc_all(gold_filename='golds.json', filepath=filepath, only_in_test 
     """
     convenince function: output of calc all as pandas dataframe 
     """
-    dict_ = calc_all()
+    dict_ = calc_all(only_in_test = only_in_test)
     df = pd.DataFrame(dict_[0])
 
     for i in range(1, len(dict_)):
